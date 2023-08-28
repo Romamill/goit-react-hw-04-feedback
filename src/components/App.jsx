@@ -1,5 +1,5 @@
 
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import Statistics from './Statistics/Statistics';
 import FeedbackOptions from './FeedbackOptions/FeedbackOptions';
 import Section from './Section/Section';
@@ -22,40 +22,28 @@ const ContentContainer = styled.div`
 `;
 
 
-class App extends Component {
-  state = {
-    good: 0,
-    neutral: 0,
-    bad: 0,
+function App() {
+  const [feedback, setFeedback] = useState({ good: 0, neutral: 0, bad: 0 });
+
+  const handleLeaveFeedback = type => {
+    setFeedback(prevFeedback => ({
+      ...prevFeedback,
+      [type]: prevFeedback[type] + 1,
+    }));
   };
 
-  handleLeaveFeedback = (type) => {
-    this.setState((prevState) => ({ [type]: prevState[type] + 1 }));
-  };
+  const { good, neutral, bad } = feedback;
+  const totalFeedback = good + neutral + bad;
+  const positivePercentage =
+    totalFeedback === 0 ? 0 : Math.round((good / totalFeedback) * 100);
 
-  countTotalFeedback = () => {
-    const { good, neutral, bad } = this.state;
-    return good + neutral + bad;
-  };
-
-  countPositiveFeedbackPercentage = () => {
-    const { good } = this.state;
-    const totalFeedback = this.countTotalFeedback();
-    return totalFeedback === 0 ? 0 : Math.round((good / totalFeedback) * 100);
-  };
-
-  render() {
-    const { good, neutral, bad } = this.state;
-    const totalFeedback = this.countTotalFeedback();
-
-    return (
-      <AppContainer>
-        <ContentContainer>
-
+  return (
+    <AppContainer>
+      <ContentContainer>
         <Section title="Pleace leave feedback">
           <FeedbackOptions
             options={['good', 'neutral', 'bad']}
-            onLeaveFeedback={this.handleLeaveFeedback}
+            onLeaveFeedback={handleLeaveFeedback}
           />
         </Section>
 
@@ -68,15 +56,13 @@ class App extends Component {
               neutral={neutral}
               bad={bad}
               total={totalFeedback}
-              positivePercentage={this.countPositiveFeedbackPercentage()}
+              positivePercentage={positivePercentage}
             />
           </Section>
-          )}
-        </ContentContainer>
-      </AppContainer>
-    );
-  }
+        )}
+      </ContentContainer>
+    </AppContainer>
+  );
 }
 
 export default App;
-
