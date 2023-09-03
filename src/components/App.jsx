@@ -4,23 +4,7 @@ import Statistics from './Statistics/Statistics';
 import FeedbackOptions from './FeedbackOptions/FeedbackOptions';
 import Section from './Section/Section';
 import Notification from './Notification/Notification';
-import styled from 'styled-components';
-
-const AppContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background-color: #f0f0f0;
-`;
-
-const ContentContainer = styled.div`
-  text-align: center;
-  padding: 20px;
-  border: 2px solid #ccc;
-  transform: scale(2);
-`;
-
+import './style.scss';
 
 function App() {
   const [feedback, setFeedback] = useState({ good: 0, neutral: 0, bad: 0 });
@@ -38,8 +22,8 @@ function App() {
     totalFeedback === 0 ? 0 : Math.round((good / totalFeedback) * 100);
 
   return (
-    <AppContainer>
-      <ContentContainer>
+    <div className="app-container">
+      <div className="content-container">
         <Section title="Pleace leave feedback">
           <FeedbackOptions
             options={['good', 'neutral', 'bad']}
@@ -60,8 +44,8 @@ function App() {
             />
           </Section>
         )}
-      </ContentContainer>
-    </AppContainer>
+      </div>
+    </div>
   );
 }
 
